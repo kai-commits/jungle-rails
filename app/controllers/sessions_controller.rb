@@ -28,5 +28,4 @@ class SessionsController < ApplicationController
     session.delete(:user_id)
     redirect_to login_path, notice: "Logged out!"
   end
-  
 end
