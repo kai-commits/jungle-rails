@@ -46,6 +46,21 @@
         </li>
       </ul>
       <ul class="navbar-nav">
+        <% if current_user %>
+          <li class="nav-item">
+            <span class="nav-link"><%= "Hello, #{current_user.first_name}!" %></span>
+          </li>
+          <li class ="nav-item">
+            <%= link_to 'Log Out', logout_path, method: :delete, class: "nav-link text-danger" %>
+          </li>
+        <% else %>
+          <li class="nav-item">
+            <%= link_to 'Log In', login_path, class: "nav-link" %>
+          </li>
+          <li class="nav-item">
+            <%= link_to 'Sign Up', signup_path, class: "nav-link" %>
+          </li>
+        <% end %>
         <li class="nav-item dropdown">
           <a
             class="nav-link dropdown-toggle text-danger"
