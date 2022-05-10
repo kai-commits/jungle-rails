@@ -48,4 +48,32 @@ RSpec.describe User, type: :model do
       expect(user.errors.full_messages).to include("Password is too short (minimum is 3 characters)")
     end
   end
+
+  describe '.authenticate_with_credentials' do
+    before(:each) do
+      @user = User.create(first_name: 'bob', last_name: 'marley', email: 'bmarley@example.com', password: '123', password_confirmation: '123')
+    end
+    it 'returns an instance of user' do
+      @user = User.authenticate_with_credentials(@user.email, @user.password)
+      expect(@user).to be_instance_of(User)
+    end
+    it 'removes whitespace' do
+      @user = User.authenticate_with_credentials('     bmarley@example.com     ', @user.password)
+      expect(@user).to_not be_nil
+      expect(@user.email).to eq('bmarley@example.com')
+    end
+    it 'is case insensitive' do
+      @user = User.authenticate_with_credentials('bMaRleY@eXamPLe.cOm', @user.password)
+      expect(@user).to_not be_nil
+      expect(@user.email).to eq('bmarley@example.com')
+    end
+    it 'returns nil with wrong email' do
+      @user = User.authenticate_with_credentials('wrong@email.com', @user.password)
+      expect(@user).to be_nil
+    end
+    it 'returns nil with wrong password' do
+      @user = User.authenticate_with_credentials(@user.email, 'wrongpassword')
+      expect(@user).to be_nil
+    end
+  end
 end

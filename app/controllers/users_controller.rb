@@ -9,6 +9,7 @@ class UsersController < ApplicationController
     
     # store all emails in lowercase to avoid duplicates and case-sensitive login errors:
     @user.email.downcase!
+    @user.email.strip!
     
     if @user.save
       # If user saves in the db successfully:
